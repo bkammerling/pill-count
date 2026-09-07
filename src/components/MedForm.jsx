@@ -6,7 +6,9 @@ const emptyForm = {
   daily_dose: 1,
   pills_at_last_refill: 30,
   last_refill_date: new Date().toISOString().slice(0, 10),
+  low_stock_threshold_type: 'days',
   low_stock_threshold_days: 7,
+  low_stock_threshold_pills: 10,
 }
 
 export default function MedForm({ initial, onCancel, onSave }) {
@@ -25,6 +27,7 @@ export default function MedForm({ initial, onCancel, onSave }) {
       daily_dose: Number(form.daily_dose),
       pills_at_last_refill: Number(form.pills_at_last_refill),
       low_stock_threshold_days: Number(form.low_stock_threshold_days),
+      low_stock_threshold_pills: Number(form.low_stock_threshold_pills),
     })
     setSaving(false)
   }
@@ -93,16 +96,58 @@ export default function MedForm({ initial, onCancel, onSave }) {
 
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
-            Notify when fewer than this many days remain
+            Notify me when low, based on
           </label>
-          <input
-            type="number"
-            min="1"
-            required
-            value={form.low_stock_threshold_days}
-            onChange={(e) => update('low_stock_threshold_days', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          />
+          <div className="inline-flex rounded-lg border border-slate-300 overflow-hidden">
+            <button
+              type="button"
+              onClick={() => update('low_stock_threshold_type', 'days')}
+              className={`px-3 py-1.5 text-sm font-medium ${
+                form.low_stock_threshold_type === 'days'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              Days left
+            </button>
+            <button
+              type="button"
+              onClick={() => update('low_stock_threshold_type', 'pills')}
+              className={`px-3 py-1.5 text-sm font-medium border-l border-slate-300 ${
+                form.low_stock_threshold_type === 'pills'
+                  ? 'bg-indigo-600 text-white'
+                  : 'bg-white text-slate-700 hover:bg-slate-50'
+              }`}
+            >
+              Pills left
+            </button>
+          </div>
+
+          {form.low_stock_threshold_type === 'days' ? (
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                required
+                value={form.low_stock_threshold_days}
+                onChange={(e) => update('low_stock_threshold_days', e.target.value)}
+                className="w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <span className="text-sm text-slate-500">days remaining</span>
+            </div>
+          ) : (
+            <div className="mt-2 flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                required
+                value={form.low_stock_threshold_pills}
+                onChange={(e) => update('low_stock_threshold_pills', e.target.value)}
+                className="w-24 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <span className="text-sm text-slate-500">pills remaining</span>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-2 pt-2">

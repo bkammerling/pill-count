@@ -12,6 +12,7 @@ export default function RefillForm({ med, onCancel, onSave }) {
     await onSave({
       pills_at_last_refill: currentlyLeft + Number(pills),
       last_refill_date: new Date().toISOString().slice(0, 10),
+      low_stock_notified_at: null,
     })
     setSaving(false)
   }

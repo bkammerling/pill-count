@@ -29,7 +29,12 @@ export default function Dashboard() {
 
   async function handleSaveMed(values) {
     if (editing && editing !== 'new') {
-      await supabase.from('meds').update(values).eq('id', editing.id)
+      // Any manual edit could change low-stock status, so clear the flag —
+      // if they're still low, the next scheduled check will re-set it.
+      await supabase
+        .from('meds')
+        .update({ ...values, low_stock_notified_at: null })
+        .eq('id', editing.id)
     } else {
       await supabase
         .from('meds')

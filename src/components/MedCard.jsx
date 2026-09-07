@@ -32,6 +32,12 @@ export default function MedCard({ med, onRefill, onEdit, onDelete }) {
         <p className="text-sm text-slate-500">
           ~{Number.isFinite(days) ? `${days} days` : '—'} remaining
         </p>
+        <p className="text-xs text-slate-400 mt-1">
+          Notify at{' '}
+          {med.low_stock_threshold_type === 'pills'
+            ? `${med.low_stock_threshold_pills} pills left`
+            : `${med.low_stock_threshold_days} days left`}
+        </p>
       </div>
 
       <div className="mt-4 flex gap-2">

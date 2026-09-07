@@ -16,5 +16,8 @@ export function daysRemaining(med) {
 }
 
 export function isLowStock(med) {
+  if (med.low_stock_threshold_type === 'pills') {
+    return pillsRemaining(med) <= med.low_stock_threshold_pills
+  }
   return daysRemaining(med) <= med.low_stock_threshold_days
 }
