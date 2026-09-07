@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MedNameInput from './MedNameInput'
 
 const emptyForm = {
   name: '',
@@ -42,11 +43,9 @@ export default function MedForm({ initial, onCancel, onSave }) {
           <label className="block text-sm font-medium text-slate-700 mb-1">
             Name
           </label>
-          <input
-            required
+          <MedNameInput
             value={form.name}
-            onChange={(e) => update('name', e.target.value)}
-            className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            onChange={(value) => update('name', value)}
           />
         </div>
 
