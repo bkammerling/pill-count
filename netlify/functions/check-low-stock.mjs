@@ -46,7 +46,10 @@ export default async () => {
       from: process.env.NOTIFY_FROM_EMAIL,
       to: userData.user.email,
       subject: 'Pill Count: medication running low',
-      html: `<p>The following medications are running low:</p><ul>${listItems}</ul><p>Log in to Pill Count to request a refill.</p>`,
+      html: `
+        <p>The following medications are running low:</p>
+        <ul>${listItems}</ul>
+        <p>Log in to <a href="https://pillcount.benkammerling.co.uk">Pill Count</a> to check your meds.</p>`,
     })
 
     await supabase
