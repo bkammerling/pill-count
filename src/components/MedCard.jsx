@@ -1,9 +1,17 @@
-import { daysRemaining, isLowStock, pillsRemaining } from '../lib/meds'
+import { daysRemaining, isLowStock, pillsRemaining, runOutDate } from '../lib/meds'
 
 export default function MedCard({ med, onRefill, onEdit, onDelete }) {
   const remaining = pillsRemaining(med)
   const days = daysRemaining(med)
+  const runOut = runOutDate(med)
   const low = isLowStock(med)
+  const runOutLabel = runOut
+    ? runOut.toLocaleDateString(undefined, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      })
+    : null
 
   return (
     <div
@@ -32,6 +40,11 @@ export default function MedCard({ med, onRefill, onEdit, onDelete }) {
         <p className="text-sm text-slate-500">
           ~{Number.isFinite(days) ? `${days} days` : '—'} remaining
         </p>
+        {runOutLabel && (
+          <p className="text-sm text-slate-500">
+            Run out around {runOutLabel}
+          </p>
+        )}
         <p className="text-xs text-slate-400 mt-1">
           Notify at{' '}
           {med.low_stock_threshold_type === 'pills'
