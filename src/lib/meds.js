@@ -15,6 +15,16 @@ export function daysRemaining(med) {
   return Math.floor(pillsRemaining(med) / med.daily_dose)
 }
 
+export function runOutDate(med, now = new Date()) {
+  if (med.daily_dose <= 0) return null
+
+  const remaining = pillsRemaining(med)
+  if (remaining <= 0) return new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
+  const days = Math.ceil(remaining / med.daily_dose)
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate() + days)
+}
+
 export function isLowStock(med) {
   if (med.low_stock_threshold_type === 'pills') {
     return pillsRemaining(med) <= med.low_stock_threshold_pills
